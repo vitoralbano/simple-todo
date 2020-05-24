@@ -15,8 +15,19 @@ class CreateProjectsTable extends Migration
     {
         Schema::create('projects', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('project_id')->nullable(true)->default(null);
             $table->string('name', 100);
+            $table->string('description', 400)->nullable(true)->default(null);
             $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('project_id')
+                ->references('id')->on('projects')
+                ->onDelete('cascade');
         });
     }
 
@@ -27,6 +38,10 @@ class CreateProjectsTable extends Migration
      */
     public function down()
     {
+        Schema::table('projects', function(Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['project_id']);
+        });
         Schema::dropIfExists('projects');
     }
 }
