@@ -20,7 +20,7 @@ class CreateTasksTable extends Migration
             $table->unsignedBigInteger('done_by_user_id')->nullable(true)->default(null);
             $table->string('value', 300);
             $table->timestamp('done_at')->nullable(true)->default(null);
-            $table->boolean('archived')->default(false);
+            $table->timestamp('archived_at')->nullable(true)->default(null);
             $table->timestamps();
 
             $table->foreign('project_id')
